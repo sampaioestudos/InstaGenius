@@ -43,12 +43,18 @@ const App: React.FC = () => {
         body: JSON.stringify({ ...formState, aspectRatio }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate media.');
+        let errorDetails = `Server responded with status ${response.status}.`;
+        try {
+          const errorData = await response.json();
+          errorDetails = errorData.error || errorDetails;
+        } catch (e) {
+          // Body was not JSON or empty, stick with the status message
+        }
+        throw new Error(errorDetails);
       }
       
+      const data = await response.json();
       setGeneratedMedia(data);
       setAppState('selecting-image');
     } catch (err) {
@@ -76,11 +82,19 @@ const App: React.FC = () => {
                 imageBase64: generatedMedia.imageBases64[selectedIndex],
             }),
         });
+        
+        if (!response.ok) {
+            let errorDetails = `Server responded with status ${response.status}.`;
+            try {
+              const errorData = await response.json();
+              errorDetails = errorData.error || errorDetails;
+            } catch (e) {
+              // Ignore JSON parse error on a failed response
+            }
+            throw new Error(errorDetails);
+        }
 
         const data = await response.json();
-        if (!response.ok) {
-            throw new Error(data.error || 'Failed to generate text content.');
-        }
         setGeneratedText(data);
         setAppState('preview');
     } catch (err) {
@@ -117,14 +131,20 @@ const App: React.FC = () => {
             }),
         });
 
-        const data = await response.json();
-
         if (!response.ok) {
-            throw new Error(data.error || 'Failed to fetch from publishing endpoint.');
+            let errorDetails = `Server responded with status ${response.status}.`;
+            try {
+              const errorData = await response.json();
+              errorDetails = errorData.error || errorDetails;
+            } catch (e) {
+               // Ignore JSON parse error on a failed response
+            }
+            throw new Error(errorDetails);
         }
-
-      setOptimizedImageUrl(data.optimizedImageUrl);
-      setAppState('published');
+        
+        const data = await response.json();
+        setOptimizedImageUrl(data.optimizedImageUrl);
+        setAppState('published');
 
     } catch (err) {
       console.error(err);

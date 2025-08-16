@@ -1,11 +1,12 @@
+
 {
   "name": "instagenius-ai-vercel",
   "version": "1.0.0",
   "private": true,
   "description": "AI Instagram Post Automator for Vercel",
   "scripts": {
-    "dev": "echo 'Run index.html in a local server'",
-    "build": "echo 'No build step for static files, Vercel will build API routes.'"
+    "dev": "vercel dev",
+    "build": "esbuild index.tsx --bundle --outfile=public/index.js --jsx=automatic"
   },
   "dependencies": {
     "@google/genai": "^1.14.0"
@@ -14,6 +15,7 @@
     "@types/node": "^20.14.9",
     "@types/react": "^18.3.3",
     "@vercel/node": "^3.2.3",
+    "esbuild": "^0.23.0",
     "typescript": "^5.5.2"
   }
 }

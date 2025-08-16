@@ -1,18 +1,5 @@
 
-export interface ApiKeys {
-  gemini: string;
-  cloudinary: {
-    cloudName: string;
-    apiKey: string;
-    apiSecret: string;
-  };
-  instagram: {
-    userId: string;
-    accessToken: string;
-  };
-}
-
-export type PostTypeId = 'feed-square' | 'feed-portrait' | 'story-reel';
+export type PostTypeId = 'feed-square' | 'feed-portrait' | 'story-reel' | 'carousel';
 export type ToneId = 'friendly' | 'professional' | 'witty' | 'inspirational' | 'casual';
 export type LengthId = 'short' | 'medium' | 'long';
 
@@ -23,10 +10,26 @@ export interface PostFormState {
   length: LengthId;
 }
 
-export interface GeneratedContent {
+export interface CaptionVariation {
   caption: string;
-  hashtags: string;
-  imageBase64: string;
+  cta: string;
 }
 
-export type AppState = 'idle' | 'loading' | 'preview' | 'publishing' | 'published' | 'error';
+export interface GeneratedMedia {
+  imageBases64: string[];
+}
+
+export interface GeneratedText {
+  captionVariations: CaptionVariation[];
+  hashtags: string;
+}
+
+export type AppState =
+  | 'idle'
+  | 'loading-media'
+  | 'selecting-image'
+  | 'loading-text'
+  | 'preview'
+  | 'publishing'
+  | 'published'
+  | 'error';

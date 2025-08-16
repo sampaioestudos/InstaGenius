@@ -1,0 +1,5 @@
+{
+  "name": "InstaGenius: AI Post Automator",
+  "description": "An application to automate the creation and publication of Instagram posts. It uses the Gemini API to generate captions, hashtags, and images from a user prompt, Cloudinary for image optimization, and simulates posting via the Instagram Graph API.",
+  "requestFramePermissions": []
+}
